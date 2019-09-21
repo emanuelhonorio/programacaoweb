@@ -1,13 +1,24 @@
 package dev.fujioka.java.avancado.web.web.rest;
 
-import dev.fujioka.java.avancado.web.domain.User;
-import dev.fujioka.java.avancado.web.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
-import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import dev.fujioka.java.avancado.web.domain.User;
+import dev.fujioka.java.avancado.web.service.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -47,6 +58,32 @@ public class UserResource {
         userService.deleteById(id);
         return ResponseEntity.ok().body("User excluded ID: " + id);
     }
-
+    
+    /* Métodos atividade */
+    
+    @GetMapping("/user/login/{login}")
+    public User buscarPorLogin(@PathVariable String login) {
+    	return this.userService.buscarPorLogin(login);
+    }
+    
+    @GetMapping("/user/firstName/{firstName}")
+    public List<User> buscarPorFirstNameLike(@PathVariable String firstName) {
+    	return this.userService.buscarPorFirstNameLike(firstName);
+    }
+    
+    @GetMapping("/user/lastName/{lastName}")
+    public List<User> buscarPorLastNameLike(@PathVariable String lastName) {
+    	return this.userService.buscarPorLastNameLike(lastName);
+    }
+    
+    @GetMapping("/user/firstName/{firstName}/lastName/{lastName}")
+    public List<User> buscarPorNomeCompleto(@PathVariable String firstName, @PathVariable String lastName) {
+    	return this.userService.buscarPorNomeCompleto(firstName, lastName);
+    }
+    
+    @GetMapping("/user/{id}/creationDate")
+    public Date pegarDataCriacao(@PathVariable Long id) {
+    	return this.userService.pegarDataCriacao(id);
+    }
 
 }
